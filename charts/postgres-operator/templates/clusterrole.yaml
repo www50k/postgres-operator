@@ -1,5 +1,5 @@
 {{ if .Values.rbac.create }}
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: {{ include "postgres-operator.serviceAccountName" . }}
@@ -16,7 +16,14 @@ rules:
   - postgresqls/status
   - operatorconfigurations
   verbs:
-  - "*"
+  - create
+  - delete
+  - deletecollection
+  - get
+  - list
+  - patch
+  - update
+  - watch
 - apiGroups:
   - apiextensions.k8s.io
   resources:
@@ -43,7 +50,8 @@ rules:
   - get
   - list
   - patch
-  - watch  # needed if zalando-postgres-operator account is used for pods as well
+  - update
+  - watch
 - apiGroups:
   - ""
   resources:
@@ -85,8 +93,9 @@ rules:
   - delete
   - get
   - list
-  - watch
   - patch
+  - update
+  - watch
 - apiGroups:
   - ""
   resources:
@@ -134,20 +143,13 @@ rules:
   - get
   - create
 - apiGroups:
-  - "rbac.authorization.k8s.io"
+  - rbac.authorization.k8s.io
   resources:
   - rolebindings
+  - roles
   verbs:
   - get
   - create
-- apiGroups:
-  - "rbac.authorization.k8s.io"
-  resources:
-  - clusterroles
-  verbs:
-  - bind
-  resourceNames:
-  - {{ include "postgres-operator.serviceAccountName" . }}
 - apiGroups:
   - batch
   resources:
