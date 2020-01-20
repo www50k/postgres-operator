@@ -251,7 +251,7 @@ func (c *Controller) initRole() {
 		        },
 		        {
 		            "apiGroups": [
-		                extensions
+		                "extensions"
 		            ],
 		            "resources": [
 		                "podsecuritypolicies"
